@@ -2,6 +2,7 @@ import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { styled } from 'styled-components'
 import "./scroll.css" 
+import Task from './Task';
 
 const Container = styled.div`
     background-color: #f4f5f7;
@@ -47,8 +48,12 @@ export default function Column({ title, tasks, id }) {
                     {...provided.droppableProps}
                     isDraggingOver = {snapshot.isDraggingOver}
                 >
-
                     {/* provide your tasks */}
+                    {
+                        tasks.map((task, index) =>(
+                            <Task key={index} index={index} task={task}/>
+                        ))
+                    }
                     {provided.placeholder}
                 </TaskList>
             }}
