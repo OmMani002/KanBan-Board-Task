@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
+import Column from './Column';
 
 export default function KanbanBoard() {
     const [completed, setCompleted] = useState([]);
@@ -19,7 +20,7 @@ export default function KanbanBoard() {
                     flexDirection: "row",
                 }}
             >
-
+                <Column title = {"TO DO"} tasks = {incomplete} id={"1"}/>
             </div>
         </DragDropContext>
     );
