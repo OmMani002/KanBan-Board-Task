@@ -1,71 +1,109 @@
-import React, { useEffect, useState } from 'react'
-import { DragDropContext } from 'react-beautiful-dnd'
-import Column from './Column';
+import { groupByEnum } from "../utils/enums";
+import "./KanbanBoard.css";
+import Card from "./block/Card";
+import Profile from "./block/ProfileStatus";
+import { useEffect, useState } from "react";
+import { orderByEnum } from "../utils/enums";
+export default function Kanban({
+  label = [],
+  options = {},
+  mode,
+  users = [],
+  stateOrderBy,
+}) {
+  const [tickets, setTickets] = useState();
 
-export default function KanbanBoard() {
-    const [completed, setCompleted] = useState([]);
-    const [incomplete, setIncomplete] = useState([]);
-    
-    useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/todos")
-        .then((response) => response.json())
-        .then((json) => {
-            setCompleted(json.filter((task) => task.completed));
-            setIncomplete(json.filter((task) => !task.completed));
-        })
-    }, []);
-  
-    const handleDragEnd = (result) => {
-        const {destination, source, draggableId} = result;
+  useEffect(() => {
+    if (stateOrderBy === orderByEnum.priority) {
+      const sortedValues = [];
+      Object.keys(options).forEach((labelsKey) => {
+        sortedValues[labelsKey] = options[labelsKey].sort((a, b) => {
+          return b.priority - a.priority;
+        });
+      });
+      setTickets({ ...sortedValues });
 
-        if(source.droppableId == destination.droppableId) return;
-
-        //remove item from source array
-
-        if(source.droppableId == 2){
-            setCompleted(removeItemById(draggableId, completed));
-        } else{
-            setIncomplete(removeItemById(draggableId, incomplete));
-        }
-
-        //get the item
-
-        const task = findItemById(draggableId, [...incomplete, ...completed]);
-        //add item
-
-        if(destination.droppableId == 2) {
-            setCompleted([{ ...task, completed: !task.completed}, ...completed]);
-        } else {
-            setIncomplete([{ ...task, completed: !task.completed}, ...incomplete]);
-        }
-    };
-
-    function findItemById(id, array) {
-        return array.find((item) => item.id == id);
+      return;
     }
+    if (stateOrderBy === orderByEnum.title) {
+      const sortedValues = [];
+      Object.keys(options).forEach((labelsKey) => {
+        sortedValues[labelsKey] = options[labelsKey].sort((a, b) => {
+          return a.title.localeCompare(b.title);
+        });
+      });
+      setTickets({ ...sortedValues });
 
-    function removeItemById(id, array) {
-        return array.filter((item) => item.id != id);
+      return;
     }
+  }, [options, stateOrderBy]);
 
-    return (
-        <DragDropContext onDragEnd={handleDragEnd}>
-            <h2 style={{textAlign: "center"}}>PROGRESS BOARD</h2>
+  return (
+    <div className="kanban">
+      {label.map((value, index) => {
+        return (
+          <div key={index} className="kanban-containers">
+            <div className="kanban-header">
+              <div className="kanban-header-profile">
+                <span>
+                  {mode === groupByEnum.user ? (
+                    <Profile
+                      active={
+                        users.find((user) => {
+                          return user.name === value;
+                        })?.available ?? false
+                      }
+                    />
+                  ) : null}
+                </span>
+                {value}
+                <span>{options[value].length}</span>
+              </div>
 
-            <div 
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexDirection: "row",
-                }}
-            >
-                <Column title = {"No priority"} tasks = {incomplete} id={"1"}/>
-                <Column title = {"Urgent"} tasks={incomplete} id={'2'}/>
-                <Column title={"High"} tasks={incomplete} id={'3'}/>
-                <Column title={"Medium"} tasks={incomplete} id={'4'}/>
-                <Column title={"Low"} tasks={incomplete} id={'5'}/>
+              <div className="kanban-action">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                  />
+                </svg>
+              </div>
             </div>
-        </DragDropContext>
-    );
+            <div key={index} className="kanban-item">
+              {tickets &&
+                tickets[value]?.map((item, index) => {
+                  return (
+                    <Card
+                      card={item}
+                      key={index}
+                      user={users.find((user) => {
+                        return user.id === item.userId;
+                      })}
+                    />
+                  );
+                })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }

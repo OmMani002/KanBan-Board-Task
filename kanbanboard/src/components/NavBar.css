@@ -1,0 +1,53 @@
+.navbar {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: rgb(255, 255, 255);
+    width: inherit;
+}
+
+.dropdown-content {
+    width: 350px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .dropdown-content {
+        width: 250px;
+    }
+    
+}
+
+ 
+.dropdown-item{
+    display: flex;
+    color: rgb(58, 58, 58);
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.dropdown-item > select {
+    width: 35%;
+    height: 20px;
+    border-radius: 3px;
+    border: 0px;
+    font-size: medium;
+    font-weight: 400;
+    color: rgb(58, 58, 58);
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0.2px 0.2px 1px 2px rgb(206, 206, 206);
+}
+ 
+.dropdown-item > span {
+    font-size: medium;
+    font-weight: 700;
+    color: rgb(82, 82, 82);
+}
+
+select, select option {text-transform:capitalize}

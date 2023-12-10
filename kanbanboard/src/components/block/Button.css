@@ -1,0 +1,51 @@
+ 
+
+
+.view-icon   {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.view-icon > svg {
+    width:16px;
+    height: 16px;
+}
+
+.view-icon-arrow  {
+    padding-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+}
+.view-icon-arrow  > svg{
+
+    width:12px;
+    height: 12px;
+}
+
+ 
+
+.view-btn {
+    display: flex;
+    
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-size: medium;
+    font-weight: 500;
+    color: rgb(58, 58, 58);
+    width: fit-content;
+    cursor: pointer;
+    transition: 0.2s;
+    /* box-shadow: 1.2px 1.2px 1.2px 1.2px rgba(0, 0, 0, 0.2);     */
+    box-shadow: 0.2px 0.2px 1px 2px rgb(206, 206, 206);
+}
+
+.view-btn > span {
+    margin-left: 3px;
+    font-weight: 700;
+}

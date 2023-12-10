@@ -1,0 +1,24 @@
+ 
+
+.view-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 4px;
+ 
+  
+    border-radius: 3px;
+    font-size: medium;
+    font-weight: 500;
+    color: rgb(58, 58, 58);
+    width: fit-content;
+    cursor: pointer;
+    transition: 0.2s;
+    /* box-shadow: 1.2px 1.2px 1.2px 1.2px rgba(0, 0, 0, 0.2);     */
+    box-shadow: 0.2px 0.2px 1px 2px rgb(206, 206, 206);
+}
+
+.view-marker > svg {
+    width:28px;
+    height: 28px;
+}
